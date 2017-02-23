@@ -31,9 +31,12 @@ handleResize(value,e)
 
   componentDidMount() 
   {
+    window.addEventListener('resize', this.handleResize.bind(this, false));
     const context = this.refs.canvas.getContext('2d');
+    //context.fillStyle='black';
+    //context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
     this.setState({ context: context });
-    context.arc(this.state.screen.width/2,this.state.screen.height/2,50,0,2*Math.PI,true);
+    this.makeBall();
     requestAnimationFrame(() => {this.update()});
 
   }
@@ -48,27 +51,25 @@ handleResize(value,e)
     context.save();
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
 
-    context.fillStyle ='red';
-    //context.globalAlpha = 0.4;
-    //context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
-    context.arc(0, 0, 2, 0, 2 * Math.PI,true);
-    context.closePath();
-    context.fill();
-    //context.globalAlpha = 1;
-    context.restore();
-    requestAnimationFrame(() => {this.update()});
-
+    context.fillStyle ='#000';
+    context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
+    this.updateObjects(this.ball, 'ball');
+     context.restore();
+     requestAnimationFrame(()=>{this.update()});
   }
-  startGame(){
+  makeBall(){
   let  ball= new Ball({
       position: {
-        x: this.state.screen.width/2-200,
+        x: this.state.screen.width/2-400,
         y: this.state.screen.height/2-200
       },
-      create: this.createObject.bind(this),
+      size: {
+        radius:50,
+      },
+      create: this.addObject.bind(this),
       //onDie: this.gameOver.bind(this)
     });
-    this.createObject(ball, 'ball');
+    this.addObject(ball, 'ball');
 }
 addObject(item,group) 
   {

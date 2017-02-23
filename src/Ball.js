@@ -7,18 +7,20 @@ class Ball
 	{
 		this.position={
 			x:window.innerWidth/2-300,
-			y:window.innerHeight-40
+			y:window.innerHeight/2-40
 		},
 		this.size={
-			radius:25
+			radius:25,
+			color:'red'
+
 		}
 	}
 	render(state){
 		const context=state.context;
 		context.save();
 		context.beginPath();
-		context.fillStyle='red';
-		context.arc(0,0,20,0,2*Math.PI,true);
+		context.fillStyle=this.size.color;
+		context.arc(this.position.x,this.position.y,this.size.radius,0,2*Math.PI,true);
 		context.fill();
 		context.closePath();
 	}
