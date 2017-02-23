@@ -1,63 +1,68 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
+//import logo from './logo.svg';
 import './App.css';
-class App extends Component {
-  constructor(size = {width:window.innerWidth, height: window.innerHeight}, options = {zIndex: 1}) {
+import Ball from './Ball.js';
+
+class App extends Component
+{
+  constructor()
+  {
     super();
-    this.objects=[];
-    
-    let canvas = document.createElement('canvas');
-    canvas.width = size.width;
-    canvas.height = size.height;
-    canvas.style.position = 'absoluter';
-    canvas.style.backgroundColor = 'black';
-    canvas.style.zIndex = options.zIndex;
-    document.body.appendChild(canvas);
-    this.context = canvas.getContext('2d');
-  }
-  addObject(object){
-      this.objects.push(object);
+    this.state = {
+      screen: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        ratio: window.DevicePixelRatio || 1,
+      },
+      context: null,
     }
-  render() {
-    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-    this.objects.forEach( o => {
-      o.draw(this.context);
+    this.ball=[];
+  }
+
+  componentDidMount() 
+  {
+    const context = this.refs.canvas.getContext('2d');
+    this.setState({ context: context });
+    context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
+    requestAnimationFrame(() => {this.update()});
+
+  }
+  update()
+  {
+    const context = this.state.context;
+    context.save();
+    context.scale(this.state.screen.ratio, this.state.screen.height);
+
+    context.fillStyle ='white';
+    context.globalAlpha = 0.4;
+    context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
+    context.globalAlpha = 1;
+
+    context.restore();
+    requestAnimationFrame(() => {this.update()});
+
+  }
+  startGame(){
+  let  ball= new Ball({
+      position: {
+        x: this.state.screen.width/2,
+        y: this.state.screen.height/2
+      },
+      create: this.createObject.bind(this),
+      //onDie: this.gameOver.bind(this)
     });
+    this.createObject(ball, 'ball');
+}
+  render()
+  {
+    return(
+      <div>
+      <canvas ref="canvas"
+      width={this.state.screen.width*this.state.screen.ratio}
+      height={this.state.screen.height*this.state.screen.ratio}
+      />
+      </div>
+      );
   }
 }
-class Circle{
-  constructor(options){
-    this.options=options;
-    this.context=undefined;
-  }
-  draw(context) {
-    this.context = context;
-    if (this.context == null) return false;
-
-    this.context.beginPath();
-    this.context.arc(
-      this.options.x,
-      this.options.y,
-      this.options.radius,
-      0,
-      2*Math.PI,
-      false
-    );
-    this.context.fill();
-    this.context.lineWidth = 1;
-    this.context.strokeStyle = '#FF4136';
-    this.context.fillStyle="red";
-    this.context.fill();
-    this.context.stroke();
-  }
-
-}
-let circle = new Circle({
-  x: window.innerWidth/2,
-  y: window.innerHeight-50,
-  radius: 25
-});
- 
-let scene=new App();
-scene.addObject(circle);
-scene.render();
 export default App;
