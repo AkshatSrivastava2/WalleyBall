@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
-//import './App.css';
 import Ball from './Ball.js';
+import Bars from './Bars.js';
 
 class App extends Component
 {
@@ -10,13 +9,15 @@ class App extends Component
     super();
     this.state = {
       screen: {
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: window.innerWidth-5,
+        height: window.innerHeight-5,
         ratio: window.DevicePixelRatio || 1,
       },
       context: null,
     }
     this.ball=[];
+    this.bars=[];
+    
   }
 handleResize(value,e)
   {
@@ -33,10 +34,9 @@ handleResize(value,e)
   {
     window.addEventListener('resize', this.handleResize.bind(this, false));
     const context = this.refs.canvas.getContext('2d');
-    //context.fillStyle='black';
-    //context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
     this.setState({ context: context });
     this.makeBall();
+    this.makeBars();
     requestAnimationFrame(() => {this.update()});
 
   }
@@ -48,29 +48,49 @@ handleResize(value,e)
   {
     const context = this.state.context;
     const ball=this.ball[0];
+    const bars=this.bars[4];
     context.save();
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
 
     context.fillStyle ='#000';
     context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
     this.updateObjects(this.ball, 'ball');
-     context.restore();
-     requestAnimationFrame(()=>{this.update()});
+    this.updateObjects(this.bars, 'bars');
+    context.restore();
+    requestAnimationFrame(()=>{this.update()});
   }
-  makeBall(){
-  let  ball= new Ball({
-      position: {
-        x: this.state.screen.width/2-400,
-        y: this.state.screen.height/2-200
-      },
-      size: {
-        radius:50,
-      },
-      create: this.addObject.bind(this),
-      //onDie: this.gameOver.bind(this)
-    });
+makeBall()
+{
+  let  ball= new Ball();
     this.addObject(ball, 'ball');
 }
+
+makeBars()
+  {
+    let xCoordinate = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
+    let yCoordinate = [5,window.innerHeight-25, window.innerHeight/2-100, window.innerHeight/2-100];
+    let barLength = [400,400,20,20];
+    let barWidth = [20,20,200,200];
+    let colors = ['red','blue','green','yellow'];
+    for(let i=0;i<4;i++)
+    {
+      let bars = new Bars({
+        position: {
+          x: xCoordinate[i],
+          y: yCoordinate[i]
+        },
+        size: {
+          length: barLength[i],
+          width: barWidth[i]
+        },
+        color: {
+          barColor: colors[i],
+        },
+        //create: this.addObject.bind(this),
+      });
+      this.addObject(bars, 'bars');
+    }
+  }
 addObject(item,group) 
   {
     this[group].push(item);
