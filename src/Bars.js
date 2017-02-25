@@ -1,18 +1,26 @@
 //import React,{Component} from 'react';
-
+//import  Ball from './Ball.js';
 export default class Bars
 {
 	constructor(args)
 	{
-		this.position =  args.position,
-		this.dimensions = args.size;
-		this.fillColor = args.color;
+		this.position =  
+		{
+			x:args.position.x,
+			y:args.position.y
+		},
+		this.dimensions = 
+		{
+			length:args.size.length,
+			width:args.size.width
+		},
+		this.fillColor = args.color.barColor;
 	}
 		
 	render(state)
 	{
 		const context= state.context;		
-		context.fillStyle = this.fillColor.barColor;
+		context.fillStyle = this.fillColor;
 		context.save();
 		context.fillRect(this.position.x,this.position.y,this.dimensions.length,this.dimensions.width);
 		context.stroke();

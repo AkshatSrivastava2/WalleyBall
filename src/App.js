@@ -9,15 +9,16 @@ class App extends Component
     super();
     this.state = {
       screen: {
-        width: window.innerWidth-5,
-        height: window.innerHeight-5,
+        width: window.innerWidth,
+        height: window.innerHeight,
         ratio: window.DevicePixelRatio || 1,
       },
+      barCount :3,
       context: null,
     }
     this.ball=[];
     this.bars=[];
-    
+    inGame: false
   }
 handleResize(value,e)
   {
@@ -35,7 +36,13 @@ handleResize(value,e)
     window.addEventListener('resize', this.handleResize.bind(this, false));
     const context = this.refs.canvas.getContext('2d');
     this.setState({ context: context });
-    this.makeBall();
+    let xcoor= window.innerWidth/2;
+    let ycoor= window.innerHeight/2;
+    let radius= 25;
+    let color= 'red';
+    let velocityx=0;
+    let velocityy=0; 
+    this.makeBall(xcoor,ycoor,radius,color, velocityx, velocityy);
     this.makeBars();
     requestAnimationFrame(() => {this.update()});
 
@@ -43,6 +50,15 @@ handleResize(value,e)
   componentWillUnmount()
   {
     window.removeEventListener('resize', this.handleResize);
+  }
+  checkCollisionsWith(item1,item2){
+    var a=item1.length-1;
+    var b=item2.length-1;
+    for(b;b>=0;b--){
+      var item1=item1[a];
+      var item2=item2[b];
+      item1.reflection(item1,item2);
+    }
   }
   update()
   {
@@ -54,14 +70,39 @@ handleResize(value,e)
 
     context.fillStyle ='#000';
     context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
+    context.globalAlpha=1.0;
+    //this.checkCollisionsWith(this.ball, this.wall);
+    for(var x=0;x<=0;x++){
+    this.checkCollisionsWith(this.ball, this.bar[x]);
+    }
     this.updateObjects(this.ball, 'ball');
     this.updateObjects(this.bars, 'bars');
     context.restore();
     requestAnimationFrame(()=>{this.update()});
   }
-makeBall()
+
+makeBall(x,y,r,c, vx, vy)
 {
-  let  ball= new Ball();
+  let  ball= new Ball(
+  	{
+  		position:
+  		{
+			xcoor:x,
+			ycoor:y
+		},
+		velocity : {
+			x: vx,
+			y: vy
+		},
+		size:
+		{
+			radius:r,
+			color:c
+
+		},
+    // create: this.createObject.bind(this),
+  	});
+    this.ball=[];
     this.addObject(ball, 'ball');
 }
 
@@ -86,11 +127,28 @@ makeBars()
         color: {
           barColor: colors[i],
         },
-        //create: this.addObject.bind(this),
+        //create: this.createObject.bind(this),
       });
       this.addObject(bars, 'bars');
     }
   }
+
+  startGame(){
+    this.setState({
+      
+      inGame: true,
+     
+    });
+    let xCoordinate= (this.state.screen.width/2);
+    let yCoordinate= 50;
+    let radius= 25;
+    let color= 'red';
+    let velocityx=1;
+    let velocityy=1; 
+    this.makeBall(xCoordinate,yCoordinate,radius,color, velocityx, velocityy);
+    requestAnimationFrame(() => {this.update()});
+  }
+
 addObject(item,group) 
   {
     this[group].push(item);
@@ -106,9 +164,26 @@ addObject(item,group)
       index++;
     }
   }
+
+
+  
     render()
   {
+    let startgamebutton;
+  	 if(!this.state.inGame){
+        startgamebutton = (
+        <div>
+        <button
+            onClick={ this.startGame.bind(this) }>
+            Start Game
+        </button>
+        </div>
+      )
+    }
+
     return(<div>
+      
+      {startgamebutton}
       <canvas ref="canvas"
       width={this.state.screen.width * this.state.screen.ratio}
       height={this.state.screen.height * this.state.screen.ratio}
