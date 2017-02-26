@@ -24,7 +24,7 @@ class Ball
 	    }
 	}
 	render(state){
-		let color = ['red','green','blue','yellow'];
+		/*let color = ['red','green','blue','yellow'];
 			//right bar
 			if(this.position.x > state.screen.width + this.size.radius-75)
 			{ 
@@ -53,7 +53,7 @@ class Ball
     		this.velocity.y = (state.screen.height + this.velocity.y);
     		this.size.color=color[Math.floor(Math.random() * 3) + 1];
     	}
-
+        */
     	this.position.x += this.velocity.x;
     	this.position.y += this.velocity.y;	
     	const context=state.context;
