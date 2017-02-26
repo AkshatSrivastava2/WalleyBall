@@ -1,5 +1,3 @@
-//import React,{Component} from 'react';
-//import  Ball from './Ball.js';
 export default class Bars
 {
 	constructor(args)

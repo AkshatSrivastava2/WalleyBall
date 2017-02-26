@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+//import React, { Component } from 'react';
 //import logo from './logo.svg';
 //import Bars from './Bars.js';
 class Ball
@@ -23,7 +23,7 @@ class Ball
 		    color : args.size.color
 	    }
 	}
-	reflection(args1,args2){
+	/*reflection(args1,args2){
 		var ballx=args1.position.x;
 		var bally=args1.position.y;
 		var ballradius=args1.size.radius;
@@ -49,7 +49,7 @@ class Ball
 		}	
 		//this.render(this.state);
 	}
-	
+	*/
 	render(state){
 		let color = ['red','green','blue','yellow'];
 			//right bar
