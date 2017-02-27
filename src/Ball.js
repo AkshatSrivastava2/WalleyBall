@@ -1,58 +1,55 @@
 import React, { Component } from 'react';
-
+//import logo from './logo.svg';
+//import './App.css';
 class Ball
 {
-	constructor()
-	{
-		this.position={
-			x:window.innerWidth/2,
-			y:window.innerHeight/2,
-		},	
 
-		this.velocity = {
-			x: Math.random() * (10 + 1.5 + 1) -1.5,
-			y: Math.random() * (10 + 1.5 + 1) -1.5
+	constructor(args)
+	{
+		this.position =
+		{
+			x:args.position.xcoor,
+			y:args.position.ycoor,
+			
 		},
-
-		this.size={
-			radius:25,
-			color:'red'
-
-		}
+		this.velocity = {
+			x: args.velocity.x,
+			y: args.velocity.y
+		},
+  
+		this.size =
+		{ 
+			radius: args.size.radius,
+		    color : args.size.color
+	    }
 	}
-
-	render(state)
-	{
-		let color = ['red','green','blue','yellow'];
+	render(state){
+		/*let color = ['red','green','blue','yellow'];
 			//right bar
-			if(this.position.x > state.screen.width + this.size.radius-75)
+			if(this.position.x > state.screen.width + this.size.radius-35)
 			{ 
 				this.velocity.x = -this.velocity.x;
 				this.size.color = color[Math.floor(Math.random() * 3) + 1];
 			}
-
     	//left bar
-    	else if(this.position.x < -this.size.radius+70) 
+    	else if(this.position.x < -this.size.radius+35) 
     	{
     		this.velocity.x = (state.screen.width + this.velocity.x);
     		this.size.color = color[Math.floor(Math.random() * 3) + 1];
-
     	}
-
        	//bottom bar
-       	if(this.position.y > state.screen.height + this.size.radius-75)
+       	if(this.position.y > state.screen.height + this.size.radius-35)
        	{ 
        		this.velocity.y = -this.velocity.y;
        		this.size.color = color[Math.floor(Math.random() * 3) + 1];
        	}
-
     	//top bar
-    	else if(this.position.y < -this.size.radius+75) 
+    	else if(this.position.y < -this.size.radius+35) 
     	{
     		this.velocity.y = (state.screen.height + this.velocity.y);
     		this.size.color=color[Math.floor(Math.random() * 3) + 1];
     	}
-
+        */
     	this.position.x += this.velocity.x;
     	this.position.y += this.velocity.y;	
     	const context=state.context;
