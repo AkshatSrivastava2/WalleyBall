@@ -10,8 +10,8 @@ class App extends Component
 		super();
 		this.state = {
 			screen: {
-				width: parent.innerWidth,
-				height: parent.innerHeight,
+				width: parent.innerWidth-5,
+				height: parent.innerHeight-5,
 				ratio: parent.DevicePixelRatio || 1,
 			},
 			context: null,
@@ -20,7 +20,7 @@ class App extends Component
 		this.ball=[];
 		this.bars=[];
 		inGame: false;
-		this.onMouseMove = this.onMouseMove.bind(this);
+		//this.onMouseMove = this.onMouseMove.bind(this);
 	}
 
 	  //this.onMouseMove = this.onMouseMove.bind(this);
@@ -43,11 +43,12 @@ class App extends Component
   		{
   			this.setState({
   				screen: {
-  					width: parent.windowWidth,
-  					height: parent.windowHeight
+  					width: parent.innerWidth,
+  					height: parent.innerHeight
   				},
   				context: null,
   			});
+  			this.startGame();
   		}	
   	}
 
@@ -94,8 +95,8 @@ class App extends Component
 		window.addEventListener('resize', this.updateDimensions.bind());
 		const context = this.refs.canvas.getContext('2d');
 		this.setState({ context: context });
-		let xcoor= window.innerWidth/2;
-		let ycoor= window.innerHeight/2;
+		let xcoor= this.state.screen.width/2;
+		let ycoor= this.state.screen.height/2;
 		let radius= 25;
 		let color= 'red';
 		let velocityx=0;
@@ -119,7 +120,8 @@ class App extends Component
 
     componentWillUnmount()
     {
-    	window.removeEventListener('resize', this.handleResize);
+    	//window.removeEventListener('resize', this.handle);
+    	window.removeEventListener('resize', this.updateDimensions);
     }
     update()
     {
@@ -329,8 +331,8 @@ class App extends Component
   		let velocityy=5; 
   		this.makeBall(xCoordinate,yCoordinate,radius,color, velocityx, velocityy);
 
-  		let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
-  		let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-10, window.innerHeight/2-10];
+  		let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,this.state.screen.width-25];
+  		let yCoordinateBar = [5,this.state.screen.height-25, this.state.screen.height/2-100, this.state.screen.height/2-100];
   		let barLength= [400,400,20,20];
   		let barWidth= [20,20,200,200];
   		let colorsBar = ['red','blue','green','yellow'];
