@@ -20,7 +20,7 @@ class App extends Component
     this.ball=[];
     this.bars=[];
     inGame: false;
-   // this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
   }
 
   //this.onMouseMove = this.onMouseMove.bind(this);
@@ -36,7 +36,7 @@ class App extends Component
     });
   }
  
-// onMouseMove(movement) {
+ onMouseMove(movement) {
 //     const canvas = ReactDOM.findDOMNode(this.refs.canvas);
 //     let x = this.state.x + movement.x;
 //     let y = this.state.y + movement.y;
@@ -65,8 +65,8 @@ class App extends Component
 //     {
 //      this.makeBar(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorBar);
 //     }
-  //console.log('asdf');
- // }
+  console.log('asdf');
+  }
   componentDidMount() 
   {
     window.addEventListener('resize', this.handleResize.bind(this, false));
@@ -89,8 +89,9 @@ class App extends Component
     let colorsBar = ['red','blue','green','yellow'];
     //   for(let i=0;i<4;i++)
     // {
-     this.makeBars(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorsBar);
+    this.makeBars(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorsBar);
     //}
+
     requestAnimationFrame(() => {this.update()});
 
   }
@@ -101,54 +102,24 @@ class App extends Component
   update()
   {
     const context = this.state.context;
-    const ball=this.ball[0];
-    const bars=this.bars[0];
+    //const ball=this.ball[0];
+    //const bars=this.bars[4];
+    
     context.save();
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
 
     context.fillStyle ='#000';
     context.fillRect(0,0,this.state.screen.width, this.state.screen.height);
-    this.checkCollisionsWith(this.ball, this.bars);
+    
+    this.checkCollisionWith(this.ball, this.bars);
+    
     this.updateObjects(this.ball, 'ball');
     this.updateObjects(this.bars, 'bars');
+    
     context.restore();
     requestAnimationFrame(()=>{this.update()});
   }
-checkCollisionsWith(item1,item2){
-    let a=0;
-    let b=3;
-    for(b;b>=0;b--){
-      let items1=item1[a];
-      let items2=item2[b];
-      this.reflection(items1,items2);
-    }
-  }
-  reflection(args1,args2){
-  		
-		let ballx=args1.position.x;
-		let bally=args1.position.y;
-		let ballradius=args1.size.radius;
-		let barx=args2.position.x;
-		let bary=args2.position.y;
-		let barWidth=args2.dimensions.width;
-		let barLength=args2.dimensions.length;
-		if(barx <= ballx&& ballx<=barx+barLength){
-			args1.velocity.y=-args1.velocity.y;
-		}
-		else if(bary<=bally&&bally<=bary+barLength){
 
-			args1.velocity.x=-args1.velocity.x;
-		}
-		else if(bary<=bally&&bally<=bary+barLength){
-
-			args1.velocity.x=-args1.velocity.x;
-		}
-		else if(barx<=ballx&&ballx<=barx+barLength){
-			//console.log("kasdkjash");
-			args1.velocity.y=-args1.velocity.y;
-		}
-		//this.makeBall(args1.position.x,args1.position.y,args1.size.radius,args1.size.color,args1.velocity.x,args1.velocity.y);
-	}
 makeBall(x,y,r,c, vx, vy)
 {
   let  ball= new Ball(
@@ -197,6 +168,131 @@ makeBars(bar_x, bar_y, bar_l, bar_w, bar_c)
     
   }
 }
+checkCollisionWith(item1,item2)
+{   
+    let a=0;
+    let b=3;
+   // console.log(item1);
+    for(b;b>=0;b--)
+    {
+      const items1 = item1[a];
+      const items2 = item2[b];
+      this.reflection(items1,items2, b);
+    }
+  }
+  reflection(args1,args2, b)
+   {
+
+		let ballx=args1.position.x;
+		let bally=args1.position.y;
+		let ballradius=args1.size.radius;
+		let ballcolor=args1.size.color;
+		
+		let barx=args2.position.x;
+		let bary=args2.position.y;
+		let ballvelocity_x=args1.velocity.x;
+		let ballvelocity_y=args1.velocity.y;
+		let barWidth=args2.dimensions.width;
+		let barLength=args2.dimensions.length;
+
+    console.log(ballvelocity_y);
+		if(b==0)
+		{
+      if(ballx>=barx&&ballx<=barx+barLength)
+			{
+              if(bally-ballradius<=bary+barWidth)
+              {
+              	this.ball[0].velocity.y=- this.ball[0].velocity.y;
+                //console.log(ballvelocity_y);
+              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //this.update();
+              }
+			}
+			else
+			{  
+				if(bally-ballradius<=0)
+        {       
+                this.ball[0].velocity.y=- this.ball[0].velocity.y;
+                //console.log(ballvelocity_y);
+              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //this.update();
+			   }
+	    }
+    }
+	 else if(b==1)
+		{
+
+      if(ballx>=barx&&ballx<=barx+barLength)
+			{
+              if(bally+ballradius>=bary)
+              {
+              	 this.ball[0].velocity.y=- this.ball[0].velocity.y;
+               //console.log(ballvelocity_y);
+ 
+              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	//this.update();
+
+              }
+			}
+			else
+			{  
+               if(bally+ballradius>=this.state.screen.height)
+               {
+                
+                this.ball[0].velocity.y=- this.ball[0].velocity.y;
+              	console.log(ballvelocity_y);
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	//this.update();
+			         }
+	    }
+    }
+	    else if(b==2)
+		{
+      if(bally>=bary&&bally<=bary+barLength)
+			{
+             if(ballx-ballradius<=barx+barWidth)
+              { alert('sahuo');
+              	this.ball[0].velocity.x=- this.ball[0].velocity.x;
+              	//console.log(ballvelocity_y);
+                //makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	//update();
+              } 
+			}
+			else
+			{
+               if(ballx-ballradius<=0)
+               {
+                this.ball[0].velocity.x=- this.ball[0].velocity.x;
+              //console.log(ballvelocity_y);
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	// requestAnimationFrame(() => {this.update()});
+			       }
+	    }
+    }
+	    else if(b==3)
+		{ 
+      if(bally+ballradius>=bary&&bally<=bary+barLength)
+			{
+              if(ballx+ballradius>=barx)
+              { alert('3');
+              	this.ball[0].velocity.x=-this.ball[0].velocity.x;
+              	//console.log(ballvelocity_y);
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	// requestAnimationFrame(() => {this.update()});
+              }
+			}
+			else
+			{
+				if(ballx+ballradius>=this.state.screen.width)
+        {      
+				  this.ball[0].velocity.x=- this.ball[0].velocity.x;
+        //console.log(ballvelocity_y);
+              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	//requestAnimationFrame(() => {this.update()});
+			   }
+	    }
+	}
+}
 
   startGame(){
     this.setState({
@@ -208,12 +304,12 @@ makeBars(bar_x, bar_y, bar_l, bar_w, bar_c)
     let yCoordinate= 50;
     let radius= 25;
     let color= 'red';
-    let velocityx=1;
-    let velocityy=1; 
+    let velocityx=5;
+    let velocityy=5; 
     this.makeBall(xCoordinate,yCoordinate,radius,color, velocityx, velocityy);
 
     let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
-    let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-100, window.innerHeight/2-100];
+    let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-10, window.innerHeight/2-10];
     let barLength= [400,400,20,20];
     let barWidth= [20,20,200,200];
     let colorsBar = ['red','blue','green','yellow'];
