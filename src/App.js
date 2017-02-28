@@ -184,7 +184,6 @@ checkCollisionWith(item1,item2)
 {   
     let a=0;
     let b=3;
-   // console.log(item1);
     for(b;b>=0;b--)
     {
       const items1 = item1[a];
@@ -207,22 +206,25 @@ checkCollisionWith(item1,item2)
     let barWidth=args2.dimensions.width;
     let barLength=args2.dimensions.length;
     let colorsBar = ['red','blue','green','yellow'];
-    //console.log(ballvelocity_y);
+    
     if(b==0)
     {
       if(ballx>=barx&&ballx<=barx+barLength)
       {
               if(bally-ballradius<=bary+barWidth)
               {
+
                 let random=Math.floor(Math.random()*10%4);
-                
+                // alert(random);
+                // console.log(this.ball[0].size.color==this.bars[0].fillColor.barColor);
+                if(this.ball[0].size.color==this.bars[0].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
+                //alert(random);
                 this.ball[0].size.color=colorsBar[random];
+              }
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-                //console.log(ballvelocity_y);
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //this.update();
+                
               }
       }
       else
@@ -230,9 +232,7 @@ checkCollisionWith(item1,item2)
         if(bally-ballradius<=0)
         {       
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-                //console.log(ballvelocity_y);
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //this.update();
+               
          }
       }
     }
@@ -244,18 +244,16 @@ checkCollisionWith(item1,item2)
               if(bally+ballradius>=bary)
               {
                 let random=Math.floor(Math.random()*10%4);
-                
+                //alert(random);
+                //console.log(this.ball[0].size.color==this.bars[1].fillColor.barColor);
+                if(this.ball[0].size.color==this.bars[1].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
+                //alert(random);
                 this.ball[0].size.color=colorsBar[random];
-                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-               //console.log(ballvelocity_y);
- 
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //this.update();
-
-                
               }
+                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
+               }
       }
       else
       {  
@@ -263,10 +261,7 @@ checkCollisionWith(item1,item2)
                {
                 
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-                //console.log(ballvelocity_y);
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //this.update();
-               }
+                }
       }
     }
       else if(b==2)
@@ -275,16 +270,17 @@ checkCollisionWith(item1,item2)
       {               
 
              if(ballx-ballradius<=barx+barLength)
-              {// alert('sahuo');
+              {
             let random=Math.floor(Math.random()*10%4);
-                
+            // alert(random);
+               // console.log(this.ball[0].size.color==this.bars[2].fillColor.barColor);
+                if(this.ball[0].size.color==this.bars[2].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
+               // alert(random);
                 this.ball[0].size.color=colorsBar[random];
+              }
                 this.ball[0].velocity.x=- this.ball[0].velocity.x;
-                
-                //makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //update();
               } 
       }
       else
@@ -292,9 +288,7 @@ checkCollisionWith(item1,item2)
                if(ballx-ballradius<=0)
                {
                 this.ball[0].velocity.x=- this.ball[0].velocity.x;
-              //console.log(ballvelocity_y);
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                // requestAnimationFrame(() => {this.update()});
+             
              }
       }
     }
@@ -303,16 +297,18 @@ checkCollisionWith(item1,item2)
       if(bally+ballradius>=bary&&bally<=bary+barWidth)
       {
               if(ballx+ballradius>=barx)
-              { //alert('3');
+              {
             let random=Math.floor(Math.random()*10%4);
-                
+           // alert(random);
+             //   console.log(this.ball[0].size.color==this.bars[3].fillColor.barColor);
+                if(this.ball[0].size.color==this.bars[3].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
+              //  alert(random);
                 this.ball[0].size.color=colorsBar[random];
+              }
                 this.ball[0].velocity.x=-this.ball[0].velocity.x;
-                
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                // requestAnimationFrame(() => {this.update()});
+               
               }
       }
       else
@@ -320,9 +316,6 @@ checkCollisionWith(item1,item2)
         if(ballx+ballradius>=this.state.screen.width)
         {      
           this.ball[0].velocity.x=- this.ball[0].velocity.x;
-        //console.log(ballvelocity_y);
-                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-                //requestAnimationFrame(() => {this.update()});
          }
       }
   }
