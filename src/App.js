@@ -16,16 +16,14 @@ class App extends Component
         ratio: parent.DevicePixelRatio || 1,
       },
       context: null,
+      currentScore:0,
     }
 
     this.ball=[];
     this.bars=[];
-    inGame: false;
+    inGame:true;
     this.onMouseMove = this.onMouseMove.bind(this);
   }
-
- // this.onMouseMove = this.onMouseMove.bind(this);
-  
   updateDimensions()
     {
       if(this.state.screen.width>parent.innerWidth || this.state.screen.height>parent.innerHeight)
@@ -90,19 +88,16 @@ class App extends Component
     let color= 'red';
     let velocityx=0;
     let velocityy=0; 
-
     this.makeBall(xcoor,ycoor,radius,color, velocityx, velocityy);
-    //this.makeBars();
 
     let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,this.state.screen.width-25];
       let yCoordinateBar = [5,this.state.screen.height-25, this.state.screen.height/2-100, this.state.screen.height/2-100];
       let barLength= [400,400,20,20];
       let barWidth= [20,20,200,200];
       let colorsBar = ['red','blue','green','yellow'];
-    //   for(let i=0;i<4;i++)
-    // {
+    
     this.makeBars(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorsBar);
-    //}
+
 
     requestAnimationFrame(() => {this.update()});
 
@@ -114,8 +109,6 @@ class App extends Component
   update()
   {
     const context = this.state.context;
-    //const ball=this.ball[0];
-    //const bars=this.bars[4];
     
     context.save();
     context.scale(this.state.screen.ratio, this.state.screen.ratio);
@@ -213,24 +206,26 @@ checkCollisionWith(item1,item2)
       {
               if(bally-ballradius<=bary+barWidth)
               {
-
+                
                 let random=Math.floor(Math.random()*10%4);
-                // alert(random);
-                // console.log(this.ball[0].size.color==this.bars[0].fillColor.barColor);
+               
                 if(this.ball[0].size.color==this.bars[0].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
-                //alert(random);
                 this.ball[0].size.color=colorsBar[random];
+                this.addScore(10);
               }
+              this.addScore(-5);
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
+              
                 
               }
       }
       else
       {  
         if(bally-ballradius<=0)
-        {       
+        {       if(this.ball[0].size.color==this.bar[0].fillColor.barColor)
+                  this.addScore(-3);
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
                
          }
@@ -244,14 +239,14 @@ checkCollisionWith(item1,item2)
               if(bally+ballradius>=bary)
               {
                 let random=Math.floor(Math.random()*10%4);
-                //alert(random);
-                //console.log(this.ball[0].size.color==this.bars[1].fillColor.barColor);
+                
                 if(this.ball[0].size.color==this.bars[1].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
-                //alert(random);
+                  this.addScore(10);
                 this.ball[0].size.color=colorsBar[random];
               }
+              this.addScore(-5);
                  this.ball[0].velocity.y=- this.ball[0].velocity.y;
                }
       }
@@ -259,7 +254,8 @@ checkCollisionWith(item1,item2)
       {  
                if(bally+ballradius>=this.state.screen.height)
                {
-                
+                if(this.ball[0].size.color==this.bar[1].fillColor.barColor)
+                  this.addScore(-3);
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
                 }
       }
@@ -272,14 +268,14 @@ checkCollisionWith(item1,item2)
              if(ballx-ballradius<=barx+barLength)
               {
             let random=Math.floor(Math.random()*10%4);
-            // alert(random);
-               // console.log(this.ball[0].size.color==this.bars[2].fillColor.barColor);
+            
                 if(this.ball[0].size.color==this.bars[2].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
-               // alert(random);
+                this.addScore(10);
                 this.ball[0].size.color=colorsBar[random];
               }
+                this.addScore(-5);
                 this.ball[0].velocity.x=- this.ball[0].velocity.x;
               } 
       }
@@ -287,6 +283,8 @@ checkCollisionWith(item1,item2)
       {
                if(ballx-ballradius<=0)
                {
+                if(this.ball[0].size.color==this.bar[2].fillColor.barColor)
+                  this.addScore(-3);
                 this.ball[0].velocity.x=- this.ball[0].velocity.x;
              
              }
@@ -299,14 +297,14 @@ checkCollisionWith(item1,item2)
               if(ballx+ballradius>=barx)
               {
             let random=Math.floor(Math.random()*10%4);
-           // alert(random);
-             //   console.log(this.ball[0].size.color==this.bars[3].fillColor.barColor);
+           
                 if(this.ball[0].size.color==this.bars[3].fillColor.barColor){
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
-              //  alert(random);
+                this.addScore(10);
                 this.ball[0].size.color=colorsBar[random];
               }
+              this.addScore(-5);
                 this.ball[0].velocity.x=-this.ball[0].velocity.x;
                
               }
@@ -315,14 +313,28 @@ checkCollisionWith(item1,item2)
       {
         if(ballx+ballradius>=this.state.screen.width)
         {      
+          if(this.ball[0].size.color==this.bar[3].fillColor.barColor)
+                  this.addScore(-3);
           this.ball[0].velocity.x=- this.ball[0].velocity.x;
          }
       }
   }
 }
+  addScore(points){
+    if(this.state.inGame){
+      this.setState({
+      currentScore:this.state.currentScore+points,
+      });
+    }
+  }
+  gameOver(){
+    this.setState({
+      inGame:false,
+    });
+  }
   startGame(){
     this.setState({
-      
+      currentScore:0,
       inGame: true,
      
     });
@@ -366,6 +378,8 @@ addObject(item,group)
     render()
   {
     let startgamebutton;
+    let message;
+    message="your score is "+this.state.currentScore;
      if(!this.state.inGame){
         startgamebutton = (
         <div>
@@ -382,6 +396,7 @@ addObject(item,group)
 
       
          {startgamebutton} 
+         <span>Score: {this.state.currentScore}</span>
        <PointerLock onMouseMove={ this.onMouseMove }>
          
          <canvas ref="canvas"
