@@ -202,7 +202,7 @@ checkCollisionWith(item1,item2)
 		let ballvelocity_y=args1.velocity.y;
 		let barWidth=args2.dimensions.width;
 		let barLength=args2.dimensions.length;
-
+    let colorsBar = ['red','blue','green','yellow'];
     //console.log(ballvelocity_y);
 		if(b==0)
 		{
@@ -210,6 +210,11 @@ checkCollisionWith(item1,item2)
 			{
               if(bally-ballradius<=bary+barWidth)
               {
+                let random=Math.floor(Math.random()*10%4);
+                
+                while(this.ball[0].size.color==colorsBar[random])
+                  random=Math.floor(Math.random()*10%4);
+                this.ball[0].size.color=colorsBar[random];
               	this.ball[0].velocity.y=- this.ball[0].velocity.y;
                 //console.log(ballvelocity_y);
               	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
@@ -234,6 +239,11 @@ checkCollisionWith(item1,item2)
 			{
               if(bally+ballradius>=bary)
               {
+                let random=Math.floor(Math.random()*10%4);
+                
+                while(this.ball[0].size.color==colorsBar[random])
+                  random=Math.floor(Math.random()*10%4);
+                this.ball[0].size.color=colorsBar[random];
               	 this.ball[0].velocity.y=- this.ball[0].velocity.y;
                //console.log(ballvelocity_y);
  
@@ -262,6 +272,11 @@ checkCollisionWith(item1,item2)
 
              if(ballx-ballradius<=barx+barLength)
               {// alert('sahuo');
+            let random=Math.floor(Math.random()*10%4);
+                
+                while(this.ball[0].size.color==colorsBar[random])
+                  random=Math.floor(Math.random()*10%4);
+                this.ball[0].size.color=colorsBar[random];
               	this.ball[0].velocity.x=- this.ball[0].velocity.x;
               	
               	//makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
@@ -285,6 +300,11 @@ checkCollisionWith(item1,item2)
 			{
               if(ballx+ballradius>=barx)
               { //alert('3');
+            let random=Math.floor(Math.random()*10%4);
+                
+                while(this.ball[0].size.color==colorsBar[random])
+                  random=Math.floor(Math.random()*10%4);
+                this.ball[0].size.color=colorsBar[random];
               	this.ball[0].velocity.x=-this.ball[0].velocity.x;
               	
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
