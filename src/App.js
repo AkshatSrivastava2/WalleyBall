@@ -11,9 +11,9 @@ class App extends Component
     super();
     this.state = {
       screen: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        ratio: window.DevicePixelRatio || 1,
+        width: parent.innerWidth-5,
+        height: parent.innerHeight-5,
+        ratio: parent.DevicePixelRatio || 1,
       },
       context: null,
     }
@@ -26,16 +26,20 @@ class App extends Component
 
  // this.onMouseMove = this.onMouseMove.bind(this);
   
-  handleResize(value,e)
-  {
-    this.setState({
-      screen: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        ratio: window.devicePixelRatio || 1,
-      }
-    });
-  }
+  updateDimensions()
+    {
+      if(this.state.screen.width>parent.innerWidth || this.state.screen.height>parent.innerHeight)
+      {
+        this.setState({
+          screen: {
+            width: parent.innerWidth,
+            height: parent.innerHeight
+          },
+          context: null,
+        });
+        this.startGame();
+      } 
+    }
  
  onMouseMove(movement) {
    if(movement.x>movement.y){
@@ -77,7 +81,7 @@ class App extends Component
 
   componentDidMount() 
   {
-    window.addEventListener('resize', this.handleResize.bind(this, false));
+    window.addEventListener('resize', this.updateDimensions.bind());
     const context = this.refs.canvas.getContext('2d');
     this.setState({ context: context });
     let xcoor= window.innerWidth/2;
@@ -90,11 +94,11 @@ class App extends Component
     this.makeBall(xcoor,ycoor,radius,color, velocityx, velocityy);
     //this.makeBars();
 
-    let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
-    let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-100, window.innerHeight/2-100];
-    let barLength= [400,400,20,20];
-    let barWidth= [20,20,200,200];
-    let colorsBar = ['red','blue','green','yellow'];
+    let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,this.state.screen.width-25];
+      let yCoordinateBar = [5,this.state.screen.height-25, this.state.screen.height/2-100, this.state.screen.height/2-100];
+      let barLength= [400,400,20,20];
+      let barWidth= [20,20,200,200];
+      let colorsBar = ['red','blue','green','yellow'];
     //   for(let i=0;i<4;i++)
     // {
     this.makeBars(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorsBar);
@@ -105,7 +109,7 @@ class App extends Component
   }
   componentWillUnmount()
   {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('resize', this.updateDimensions);
   }
   update()
   {
@@ -191,23 +195,23 @@ checkCollisionWith(item1,item2)
   reflection(args1,args2, b)
    {
 
-		let ballx=args1.position.x;
-		let bally=args1.position.y;
-		let ballradius=args1.size.radius;
-		let ballcolor=args1.size.color;
-		
-		let barx=args2.position.x;
-		let bary=args2.position.y;
-		let ballvelocity_x=args1.velocity.x;
-		let ballvelocity_y=args1.velocity.y;
-		let barWidth=args2.dimensions.width;
-		let barLength=args2.dimensions.length;
+    let ballx=args1.position.x;
+    let bally=args1.position.y;
+    let ballradius=args1.size.radius;
+    let ballcolor=args1.size.color;
+    
+    let barx=args2.position.x;
+    let bary=args2.position.y;
+    let ballvelocity_x=args1.velocity.x;
+    let ballvelocity_y=args1.velocity.y;
+    let barWidth=args2.dimensions.width;
+    let barLength=args2.dimensions.length;
     let colorsBar = ['red','blue','green','yellow'];
     //console.log(ballvelocity_y);
-		if(b==0)
-		{
+    if(b==0)
+    {
       if(ballx>=barx&&ballx<=barx+barLength)
-			{
+      {
               if(bally-ballradius<=bary+barWidth)
               {
                 let random=Math.floor(Math.random()*10%4);
@@ -215,28 +219,28 @@ checkCollisionWith(item1,item2)
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
                 this.ball[0].size.color=colorsBar[random];
-              	this.ball[0].velocity.y=- this.ball[0].velocity.y;
+                this.ball[0].velocity.y=- this.ball[0].velocity.y;
                 //console.log(ballvelocity_y);
-              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
                 //this.update();
               }
-			}
-			else
-			{  
-				if(bally-ballradius<=0)
+      }
+      else
+      {  
+        if(bally-ballradius<=0)
         {       
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
                 //console.log(ballvelocity_y);
-              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
                 //this.update();
-			   }
-	    }
+         }
+      }
     }
-	 else if(b==1)
-		{
+   else if(b==1)
+    {
 
       if(ballx>=barx&&ballx<=barx+barLength)
-			{
+      {
               if(bally+ballradius>=bary)
               {
                 let random=Math.floor(Math.random()*10%4);
@@ -244,31 +248,31 @@ checkCollisionWith(item1,item2)
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
                 this.ball[0].size.color=colorsBar[random];
-              	 this.ball[0].velocity.y=- this.ball[0].velocity.y;
+                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
                //console.log(ballvelocity_y);
  
-              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	//this.update();
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //this.update();
 
-              	
+                
               }
-			}
-			else
-			{  
+      }
+      else
+      {  
                if(bally+ballradius>=this.state.screen.height)
                {
                 
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-              	//console.log(ballvelocity_y);
+                //console.log(ballvelocity_y);
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	//this.update();
-			         }
-	    }
+                //this.update();
+               }
+      }
     }
-	    else if(b==2)
-		{
+      else if(b==2)
+    {
       if(bally>=bary&&bally<=bary+barWidth)
-			{              	
+      {               
 
              if(ballx-ballradius<=barx+barLength)
               {// alert('sahuo');
@@ -277,27 +281,27 @@ checkCollisionWith(item1,item2)
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
                 this.ball[0].size.color=colorsBar[random];
-              	this.ball[0].velocity.x=- this.ball[0].velocity.x;
-              	
-              	//makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	//update();
+                this.ball[0].velocity.x=- this.ball[0].velocity.x;
+                
+                //makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //update();
               } 
-			}
-			else
-			{
+      }
+      else
+      {
                if(ballx-ballradius<=0)
                {
                 this.ball[0].velocity.x=- this.ball[0].velocity.x;
               //console.log(ballvelocity_y);
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	// requestAnimationFrame(() => {this.update()});
-			       }
-	    }
+                // requestAnimationFrame(() => {this.update()});
+             }
+      }
     }
-	    else if(b==3)
-		{ 
+      else if(b==3)
+    { 
       if(bally+ballradius>=bary&&bally<=bary+barWidth)
-			{
+      {
               if(ballx+ballradius>=barx)
               { //alert('3');
             let random=Math.floor(Math.random()*10%4);
@@ -305,25 +309,24 @@ checkCollisionWith(item1,item2)
                 while(this.ball[0].size.color==colorsBar[random])
                   random=Math.floor(Math.random()*10%4);
                 this.ball[0].size.color=colorsBar[random];
-              	this.ball[0].velocity.x=-this.ball[0].velocity.x;
-              	
+                this.ball[0].velocity.x=-this.ball[0].velocity.x;
+                
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	// requestAnimationFrame(() => {this.update()});
+                // requestAnimationFrame(() => {this.update()});
               }
-			}
-			else
-			{
-				if(ballx+ballradius>=this.state.screen.width)
+      }
+      else
+      {
+        if(ballx+ballradius>=this.state.screen.width)
         {      
-				  this.ball[0].velocity.x=- this.ball[0].velocity.x;
+          this.ball[0].velocity.x=- this.ball[0].velocity.x;
         //console.log(ballvelocity_y);
-              	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
-              	//requestAnimationFrame(() => {this.update()});
-			   }
-	    }
-	}
+                //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+                //requestAnimationFrame(() => {this.update()});
+         }
+      }
+  }
 }
-
   startGame(){
     this.setState({
       
