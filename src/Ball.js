@@ -55,7 +55,9 @@ class Ball
     	}
         */
     	this.position.x += this.velocity.x;
+    	//console.log(this.velocity.x);
     	this.position.y += this.velocity.y;	
+ 		//console.log(this.velocity.y);
     	const context=state.context;
     	context.save();
     	context.beginPath();

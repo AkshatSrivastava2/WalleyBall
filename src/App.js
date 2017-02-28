@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Ball from './Ball.js';
 import Bars from './Bars.js';
-//import PointerLock from 'react-pointerlock';
+import PointerLock from './react-pointerlock';
 
 class App extends Component
 {
@@ -23,7 +24,7 @@ class App extends Component
     this.onMouseMove = this.onMouseMove.bind(this);
   }
 
-  //this.onMouseMove = this.onMouseMove.bind(this);
+ // this.onMouseMove = this.onMouseMove.bind(this);
   
   handleResize(value,e)
   {
@@ -37,36 +38,43 @@ class App extends Component
   }
  
  onMouseMove(movement) {
-//     const canvas = ReactDOM.findDOMNode(this.refs.canvas);
-//     let x = this.state.x + movement.x;
-//     let y = this.state.y + movement.y;
- 
-//     if (x > canvas.clientWidth + 20) {
-//       x = 0;
-//     }
- 
-//     if (y > canvas.clientHeight + 20) {
-//       y = 0;
-//     }
- 
-//     if (x < -15) {
-//       x = canvas.clientWidth;
-//     }
- 
-//     if (y < -15) {
-//       y = canvas.clientHeight;
-//     }
-//     let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
-//     let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-100, window.innerHeight/2-100];
-//     let barLength= [400,400,20,20];
-//     let barWidth= [20,20,200,200];
-//     let colorsBar = ['red','blue','green','yellow'];
-//       for(let i=0;i<4;i++)
-//     {
-//      this.makeBar(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorBar);
-//     }
-  console.log('asdf');
+   if(movement.x>movement.y){
+    //right movement
+    if(this.bars[0].position.x+this.bars[0].dimensions.length>this.state.screen.width-50)
+    {
+      movement.x=0;
+    }
+    this.bars[0].position.x=this.bars[0].position.x+movement.x;
+    this.bars[1].position.x=this.bars[1].position.x+movement.x;
+   }else if(movement.x<movement.y){
+    //left movement
+    if(this.bars[0].position.x<50)
+    {
+      movement.x=0;
+    }
+    this.bars[0].position.x=this.bars[0].position.x+movement.x;
+    this.bars[1].position.x=this.bars[1].position.x+movement.x;
+   }
+   if(movement.x>movement.y){
+    if(this.bars[3].position.y<50)
+    {
+      movement.y=0;
+    }
+    //upper movement
+    this.bars[2].position.y=this.bars[2].position.y+movement.y;
+    this.bars[3].position.y=this.bars[3].position.y+movement.y;
+   }else if(movement.x<movement.y){
+    //bottom movement
+     if(this.bars[3].position.y+this.bars[3].dimensions.width>this.state.screen.height-50)
+    {
+      movement.y=0;
+    }
+    this.bars[2].position.y=this.bars[2].position.y+movement.y;
+    this.bars[3].position.y=this.bars[3].position.y+movement.y;
+   }
+
   }
+
   componentDidMount() 
   {
     window.addEventListener('resize', this.handleResize.bind(this, false));
@@ -195,7 +203,7 @@ checkCollisionWith(item1,item2)
 		let barWidth=args2.dimensions.width;
 		let barLength=args2.dimensions.length;
 
-    console.log(ballvelocity_y);
+    //console.log(ballvelocity_y);
 		if(b==0)
 		{
       if(ballx>=barx&&ballx<=barx+barLength)
@@ -232,6 +240,7 @@ checkCollisionWith(item1,item2)
               	//this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
               	//this.update();
 
+              	
               }
 			}
 			else
@@ -240,7 +249,7 @@ checkCollisionWith(item1,item2)
                {
                 
                 this.ball[0].velocity.y=- this.ball[0].velocity.y;
-              	console.log(ballvelocity_y);
+              	//console.log(ballvelocity_y);
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
               	//this.update();
 			         }
@@ -248,13 +257,14 @@ checkCollisionWith(item1,item2)
     }
 	    else if(b==2)
 		{
-      if(bally>=bary&&bally<=bary+barLength)
-			{
-             if(ballx-ballradius<=barx+barWidth)
-              { alert('sahuo');
+      if(bally>=bary&&bally<=bary+barWidth)
+			{              	
+
+             if(ballx-ballradius<=barx+barLength)
+              {// alert('sahuo');
               	this.ball[0].velocity.x=- this.ball[0].velocity.x;
-              	//console.log(ballvelocity_y);
-                //makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
+              	
+              	//makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
               	//update();
               } 
 			}
@@ -271,12 +281,12 @@ checkCollisionWith(item1,item2)
     }
 	    else if(b==3)
 		{ 
-      if(bally+ballradius>=bary&&bally<=bary+barLength)
+      if(bally+ballradius>=bary&&bally<=bary+barWidth)
 			{
               if(ballx+ballradius>=barx)
-              { alert('3');
+              { //alert('3');
               	this.ball[0].velocity.x=-this.ball[0].velocity.x;
-              	//console.log(ballvelocity_y);
+              	
                 //this.makeBall(ballx,bally,ballradius,ballcolor, ballvelocity_x, ballvelocity_y);
               	// requestAnimationFrame(() => {this.update()});
               }
@@ -301,7 +311,7 @@ checkCollisionWith(item1,item2)
      
     });
     let xCoordinate= (this.state.screen.width/2);
-    let yCoordinate= 50;
+    let yCoordinate= 100;
     let radius= 25;
     let color= 'red';
     let velocityx=5;
@@ -309,7 +319,7 @@ checkCollisionWith(item1,item2)
     this.makeBall(xCoordinate,yCoordinate,radius,color, velocityx, velocityy);
 
     let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
-    let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-10, window.innerHeight/2-10];
+    let yCoordinateBar = [5,window.innerHeight-25, window.innerHeight/2-100, window.innerHeight/2-100];
     let barLength= [400,400,20,20];
     let barWidth= [20,20,200,200];
     let colorsBar = ['red','blue','green','yellow'];
@@ -356,11 +366,14 @@ addObject(item,group)
 
       
          {startgamebutton} 
+       <PointerLock onMouseMove={ this.onMouseMove }>
+         
          <canvas ref="canvas"
          width={this.state.screen.width * this.state.screen.ratio}
          height={this.state.screen.height * this.state.screen.ratio}
          />
-       
+      
+       </PointerLock>
 
        </div>
     );
