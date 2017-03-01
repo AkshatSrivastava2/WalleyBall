@@ -31,18 +31,22 @@ class Ball
 				this.velocity.x = -this.velocity.x;
 				this.size.color = color[Math.floor(Math.random() * 3) + 1];
 			}
+
     	//left bar
     	else if(this.position.x < -this.size.radius+35) 
     	{
     		this.velocity.x = (state.screen.width + this.velocity.x);
     		this.size.color = color[Math.floor(Math.random() * 3) + 1];
+
     	}
+
        	//bottom bar
        	if(this.position.y > state.screen.height + this.size.radius-35)
        	{ 
        		this.velocity.y = -this.velocity.y;
        		this.size.color = color[Math.floor(Math.random() * 3) + 1];
        	}
+
     	//top bar
     	else if(this.position.y < -this.size.radius+35) 
     	{
@@ -51,7 +55,9 @@ class Ball
     	}
         */
     	this.position.x += this.velocity.x;
+    	//console.log(this.velocity.x);
     	this.position.y += this.velocity.y;	
+ 		//console.log(this.velocity.y);
     	const context=state.context;
     	context.save();
     	context.beginPath();
