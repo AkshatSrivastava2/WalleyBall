@@ -110,11 +110,11 @@ class App extends Component
 
     	this.makeBars(xCoordinateBar,yCoordinateBar,barLength,barWidth,colorsBar);
     	
-    	let obstacle_x = [200,500,300,600];
-    	let obstacle_y = [200,250,400,450];
-    	let obstacle_type = ['grey','white','grey','white'];
-    	let obstacle_l = [50,50,50,50];
-    	let obstacle_w = [50,50,50,50];
+    	let obstacle_x = [200,600,1000];
+    	let obstacle_y = [200,400,300];
+    	let obstacle_type = ['#95a5a6','#DAA520','#34495e'];
+    	let obstacle_l = [70,70,70];
+    	let obstacle_w = [70,70,70];
 
     	/*let some_image = new Image()
     	some_image.src = Wall
@@ -232,15 +232,15 @@ class App extends Component
     	}
     }
 
-    checkCollisionWithObstacles(item1, item2)
+    checkCollisionWithObstacles(element1, element2)
     {
-    	let a=0;
-    	let b=3;
-    	for(b;b>=0;b--)
+    	let c=0;
+    	let d=2;
+    	for(d;d>=0;d--)
     	{
-    		const items1 = item1[a];
-    		const items2 = item2[b];
-    		this.reflectionFromObstacles(items1,items2, b);
+    		const elements1 = element1[c];
+    		const elements2 = element2[d];
+    		this.reflectionFromObstacles(elements1,elements2, d);
     	}
     }
 
@@ -265,7 +265,6 @@ class App extends Component
     		{
     			if(bally-ballradius<=bary+barWidth)
     			{
-
     				let random=Math.floor(Math.random()*10%4);
     				if(this.ball[0].size.color==this.bars[0].fillColor.barColor)
     				{
@@ -364,16 +363,108 @@ class App extends Component
     	}
     }
 
-
-    reflectionFromObstacles(args1,args2,b)
+    reflectionFromObstacles(arg1,arg2,d)
     {
-    	let ballx=args1.position.x;
-    	let bally=args1.position.y;
-    	let ballradius=args1.size.radius;
-    	let ballcolor=args1.size.color;
+    	let ballx=arg1.position.x;
+    	let bally=arg1.position.y;
+    	let ballradius=arg1.size.radius;
+    	let ballcolor=arg1.size.color;
+    	let ballvelocity_x=arg1.velocity.x;
+    	let ballvelocity_y=arg1.velocity.y;
 
-    	let obstaclesx = args2.position.x;
-    	let obstaclesy = args2.position.y
+    	let obstaclesx = arg2.position.x;
+    	let obstaclesy = arg2.position.y;
+    	let obstacleLength = arg2.dimensions.length;
+    	let obstacleWidth = arg2.dimensions.width;
+    	let obstacleType = arg2.obstacleType.name;
+
+    	if(d==0)
+    	{
+    		if(ballx>=obstaclesx && ballx<=obstaclesx+obstacleLength)
+    		{
+    			if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth) //top
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("1");
+    			}
+    			else if(bally-ballradius<=obstaclesy+obstacleWidth && bally-ballradius>=obstaclesy) //bottom
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("0");			
+    			}
+    		}
+    		else if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth)
+    		{
+    			if(ballx+ballradius>=obstaclesx && ballx+ballradius<=obstaclesx+obstacleLength) //left
+    			{
+    				this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				//this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    			else if(ballx-ballradius<=obstaclesx+obstacleLength && ballx-ballradius>=obstaclesx) //right
+    			{
+    				//this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    		}
+    	}
+    	else if(d==1)
+    	{
+    		if(ballx>=obstaclesx && ballx<=obstaclesx+obstacleLength)
+    		{
+    			if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth) //top
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("1");
+    			}
+    			else if(bally-ballradius<=obstaclesy+obstacleWidth && bally-ballradius>=obstaclesy) //bottom
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("0");			
+    			}
+    		}
+    		else if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth)
+    		{
+    			if(ballx+ballradius>=obstaclesx && ballx+ballradius<=obstaclesx+obstacleLength) //left
+    			{
+    				this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				//this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    			else if(ballx-ballradius<=obstaclesx+obstacleLength && ballx-ballradius>=obstaclesx) //right
+    			{
+    				//this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    		}
+    	}
+    	else if(d==2)
+    	{
+    		if(ballx>=obstaclesx && ballx<=obstaclesx+obstacleLength)
+    		{
+    			if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth) //top
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("1");
+    			}
+    			else if(bally-ballradius<=obstaclesy+obstacleWidth && bally-ballradius>=obstaclesy) //bottom
+    			{
+    				this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    				//alert("0");			
+    			}
+    		}
+    		else if(bally+ballradius>=obstaclesy && bally+ballradius<=obstaclesy+obstacleWidth)
+    		{
+    			if(ballx+ballradius>=obstaclesx && ballx+ballradius<=obstaclesx+obstacleLength) //left
+    			{
+    				this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				//this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    			else if(ballx-ballradius<=obstaclesx+obstacleLength && ballx-ballradius>=obstaclesx) //right
+    			{
+    				this.ball[0].velocity.x= -this.ball[0].velocity.x;
+    				//this.ball[0].velocity.y= -this.ball[0].velocity.y;
+    			}
+    		}
+    	}
     }
 
 
@@ -386,8 +477,8 @@ class App extends Component
     	let yCoordinate= 100;
     	let radius= 25;
     	let color= 'red';
-    	let velocityx=5;
-    	let velocityy=5; 
+    	let velocityx=10;
+    	let velocityy=10; 
     	this.makeBall(xCoordinate,yCoordinate,radius,color, velocityx, velocityy);
 
     	let xCoordinateBar = [(this.state.screen.width/2)-200,(this.state.screen.width/2)-200,5,window.innerWidth-35];
@@ -403,7 +494,6 @@ class App extends Component
     	let obstacle_type = 'grey';
     	let obstacle_l = 50;
     	let obstacle_w = 50;
-
     	this.makeObstacles(obstacle_x, obstacle_y, obstacle_l, obstacle_w, obstacle_type);
 
     	requestAnimationFrame(() => {this.update()});
@@ -443,11 +533,8 @@ class App extends Component
 
     	return(
     		<div>
-
-
-    	
     		<PointerLock onMouseMove={ this.onMouseMove }>
-              	{startgamebutton} 
+    		{startgamebutton} 
     		<canvas ref="canvas"
     		width={this.state.screen.width * this.state.screen.ratio}
     		height={this.state.screen.height * this.state.screen.ratio}
